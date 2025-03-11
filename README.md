@@ -1,55 +1,117 @@
 # Robot Turtles
 
-Robot Turtles是一个基于Java开发的游戏项目，灵感来源于同名的编程教育桌游。这个项目包含了游戏的核心逻辑和服务器端实现。
+[Français](#français) | [English](#english)
 
-## 项目结构
+## Français
 
-项目分为两个主要部分：
+Robot Turtles est un projet de jeu développé en Java, inspiré du jeu de société éducatif du même nom. Ce projet comprend la logique principale du jeu et une implémentation côté serveur.
 
-1. **RobotTurtles-master** - 游戏的核心实现
-   - `src/com/company` - 包含游戏的主要类和逻辑
-   - `imgCartes` - 游戏中使用的图像资源
+### Structure du Projet
 
-2. **robot-turtles-server** - 服务器端实现
-   - 基于Maven构建的Java服务器项目
-   - 提供网络多人游戏支持
+Le projet est divisé en deux parties principales :
 
-## 游戏简介
+1. **RobotTurtles-master** - Implémentation principale du jeu
+   - `src/com/company` - Contient les classes et la logique principales du jeu
+   - `imgCartes` - Ressources d'images utilisées dans le jeu
 
-Robot Turtles是一个教授编程基础概念的游戏。玩家通过使用指令卡（如前进、左转、右转等）来控制自己的机器龟，目标是到达宝石位置。游戏中包含各种障碍物，玩家需要通过编写"程序"（指令序列）来避开这些障碍物并达到目标。
+2. **robot-turtles-server** - Implémentation côté serveur
+   - Projet Java basé sur Maven
+   - Fournit un support pour le jeu multijoueur en réseau
 
-## 主要功能
+### Introduction au Jeu
 
-- 多玩家支持
-- 图形化界面
-- 指令卡系统
-- 障碍物系统
-- 程序执行功能
+Robot Turtles est un jeu qui enseigne les concepts de base de la programmation. Les joueurs contrôlent leur tortue robot en utilisant des cartes d'instruction (comme avancer, tourner à gauche, tourner à droite, etc.), avec l'objectif d'atteindre la position du joyau. Le jeu comprend divers obstacles, et les joueurs doivent écrire des "programmes" (séquences d'instructions) pour éviter ces obstacles et atteindre leur objectif.
 
-## 技术栈
+### Fonctionnalités Principales
+
+- Support multijoueur
+- Interface graphique
+- Système de cartes d'instruction
+- Système d'obstacles
+- Fonctionnalité d'exécution de programme
+
+### Stack Technique
 
 - Java
 - Swing (GUI)
-- Maven (服务器端)
+- Maven (côté serveur)
 
-## 如何运行
+### Comment Exécuter
 
-### 客户端
+#### Client
 
-1. 克隆仓库
-2. 使用Java IDE（如IntelliJ IDEA）打开RobotTurtles-master目录
-3. 运行`src/com/company/Main.java`文件
+1. Cloner le dépôt
+2. Ouvrir le répertoire RobotTurtles-master avec un IDE Java (comme IntelliJ IDEA)
+3. Exécuter le fichier `src/com/company/Main.java`
 
-### 服务器端
+#### Serveur
 
-1. 进入robot-turtles-server目录
-2. 使用Maven构建项目：`mvn clean install`
-3. 运行生成的JAR文件
+1. Accéder au répertoire robot-turtles-server
+2. Construire le projet avec Maven : `mvn clean install`
+3. Exécuter le fichier JAR généré
 
-## 贡献
+### Contribution
 
-欢迎提交问题和改进建议！
+Les problèmes et suggestions d'amélioration sont les bienvenus !
 
-## 许可证
+### Licence
+
+[MIT](LICENSE)
+
+---
+
+## English
+
+Robot Turtles is a game project developed in Java, inspired by the educational board game of the same name. This project includes the core game logic and a server-side implementation.
+
+### Project Structure
+
+The project is divided into two main parts:
+
+1. **RobotTurtles-master** - Core game implementation
+   - `src/com/company` - Contains the main game classes and logic
+   - `imgCartes` - Image resources used in the game
+
+2. **robot-turtles-server** - Server-side implementation
+   - Maven-based Java server project
+   - Provides network multiplayer game support
+
+### Game Introduction
+
+Robot Turtles is a game that teaches basic programming concepts. Players control their robot turtle using instruction cards (such as move forward, turn left, turn right, etc.), with the goal of reaching the jewel position. The game includes various obstacles, and players need to write "programs" (instruction sequences) to avoid these obstacles and reach their goal.
+
+### Main Features
+
+- Multiplayer support
+- Graphical user interface
+- Instruction card system
+- Obstacle system
+- Program execution functionality
+
+### Tech Stack
+
+- Java
+- Swing (GUI)
+- Maven (server-side)
+
+### How to Run
+
+#### Client
+
+1. Clone the repository
+2. Open the RobotTurtles-master directory with a Java IDE (such as IntelliJ IDEA)
+3. Run the `src/com/company/Main.java` file
+
+#### Server
+
+1. Navigate to the robot-turtles-server directory
+2. Build the project with Maven: `mvn clean install`
+3. Run the generated JAR file
+
+### Contribution
+
+Issues and improvement suggestions are welcome!
+
+### License
 
 [MIT](LICENSE) 
