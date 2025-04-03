@@ -1,0 +1,62 @@
+.cell {
+  width: 60px;
+  height: 60px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  border: 1px solid #d4d4d4;
+}
+
+.light {
+  background-color: #f0f0f0;
+}
+
+.dark {
+  background-color: #e0e0e0;
+}
+
+.turtle {
+  width: 50px;
+  height: 50px;
+  background-image: url('../assets/Turtle1.jpg');
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+  position: relative;
+  transition: transform 0.3s ease;
+}
+
+.jewel {
+  width: 40px;
+  height: 40px;
+  background-image: url('../assets/Joyau.png');
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+}
+
+.wall {
+  width: 40px;
+  height: 40px;
+  background-image: url('../assets/Pierre.png');
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+}
+
+.turtle-up {
+  transform: rotate(0deg);
+}
+
+.turtle-right {
+  transform: rotate(90deg);
+}
+
+.turtle-down {
+  transform: rotate(180deg);
+}
+
+.turtle-left {
+  transform: rotate(270deg);
+} 
