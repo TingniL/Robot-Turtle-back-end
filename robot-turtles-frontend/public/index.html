@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Robot Turtles Game</title>
+    <title>Robot Turtles Game - Fixed Version</title>
     <style>
       body {
         font-family: Arial, sans-serif;
@@ -38,6 +38,7 @@
         align-items: center;
         justify-content: center;
         position: relative;
+        border: 1px solid #ddd;
       }
       .turtle {
         width: 80%;
@@ -45,6 +46,7 @@
         background-size: contain;
         background-repeat: no-repeat;
         background-position: center;
+        position: relative;
       }
       .turtle.up { transform: rotate(0deg); }
       .turtle.right { transform: rotate(90deg); }
@@ -58,7 +60,11 @@
         background-position: center;
       }
       .wall {
-        background-color: #666;
+        width: 80%;
+        height: 80%;
+        background-size: contain;
+        background-repeat: no-repeat;
+        background-position: center;
       }
       .controls {
         display: flex;
@@ -81,6 +87,12 @@
         background-color: #cccccc;
         cursor: not-allowed;
       }
+      #laser-btn {
+        background-color: #ff4500;
+      }
+      #laser-btn:hover {
+        background-color: #cc3700;
+      }
       .card-deck {
         display: flex;
         gap: 10px;
@@ -98,6 +110,9 @@
         justify-content: center;
         cursor: pointer;
         transition: transform 0.2s;
+        background-size: contain;
+        background-repeat: no-repeat;
+        background-position: center;
       }
       .card:hover {
         transform: scale(1.05);
@@ -111,6 +126,7 @@
         background-color: white;
         border-radius: 5px;
         box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        display: none; /* 默认隐藏 */
       }
       .player-selection h2 {
         margin-top: 0;
@@ -151,9 +167,64 @@
         100% { transform: rotate(360deg); }
       }
       .error-message {
-        color: red;
+        background-color: #f8f8f8;
+        border-radius: 5px;
+        padding: 10px;
         margin: 10px 0;
         display: none;
+      }
+      .ai-section {
+        background-color: #e8f5e9;
+        border-radius: 5px;
+        padding: 15px;
+        margin: 15px 0;
+      }
+      .probabilities {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+      }
+      .probabilities p {
+        flex: 1;
+        min-width: 150px;
+        margin: 5px 0;
+      }
+      /* 调试信息 */
+      .debug-info {
+        margin-top: 20px;
+        padding: 10px;
+        background-color: #f0f0f0;
+        border: 1px solid #ddd;
+        border-radius: 5px;
+      }
+      /* 镭射动画 */
+      @keyframes pulsate {
+        0% { transform: scale(1); background-color: #fff; }
+        50% { transform: scale(1.2); background-color: #ff6347; }
+        100% { transform: scale(1); background-color: #fff; }
+      }
+      /* 游戏说明 */
+      .game-instructions {
+        background-color: #f9f9f9;
+        padding: 15px;
+        margin: 15px 0;
+        border-radius: 5px;
+        border-left: 4px solid #4CAF50;
+      }
+      .game-instructions h3 {
+        margin-top: 0;
+        color: #333;
+      }
+      .game-instructions ul {
+        padding-left: 20px;
+      }
+      
+      /* 新增：版本信息 */
+      .version-info {
+        font-size: 12px;
+        color: #999;
+        text-align: center;
+        margin-top: 20px;
       }
     </style>
   </head>
@@ -161,10 +232,26 @@
     <div class="container">
       <h1>Robot Turtles Game</h1>
       
-      <!-- Player Selection -->
+      <div class="version-info">Version 2.0 - Fixed</div>
+      
+      <!-- 游戏说明 -->
+      <div class="game-instructions">
+        <h3>游戏说明</h3>
+        <p>提示：使用镭射摧毁乌龟前方的墙壁，然后前进到达宝石位置即可获胜。</p>
+        <ul>
+          <li><strong>Forward</strong>: 向前移动一格</li>
+          <li><strong>Left</strong>: 向左转90度（不移动）</li>
+          <li><strong>Right</strong>: 向右转90度（不移动）</li>
+          <li><strong>Laser</strong>: 发射镭射，可以摧毁乌龟正前方的墙壁</li>
+        </ul>
+        <p><em>提示: 使用镭射摧毁墙壁后，可以通过前进穿过原来墙壁的位置</em></p>
+      </div>
+      
+      <!-- Player Selection - 默认隐藏 -->
       <div class="player-selection" id="playerSelection">
         <h2>Select Number of Players</h2>
         <div class="player-count">
+          <button onclick="startGame(1)">1 Player (Test)</button>
           <button onclick="startGame(2)">2 Players</button>
           <button onclick="startGame(3)">3 Players</button>
           <button onclick="startGame(4)">4 Players</button>
@@ -172,7 +259,7 @@
       </div>
 
       <!-- Game Info -->
-      <div class="game-info" id="gameInfo" style="display: none;">
+      <div class="game-info" id="gameInfo">
         <h2>Game Status</h2>
         <p>Status: <span id="gameStatus">Active</span></p>
         <p>Moves: <span id="moveCount">0</span></p>
@@ -183,16 +270,16 @@
       <div class="game-board" id="gameBoard"></div>
 
       <!-- Card Deck -->
-      <div class="card-deck" id="cardDeck" style="display: none;"></div>
+      <div class="card-deck" id="cardDeck"></div>
 
       <!-- Controls -->
-      <div class="controls" id="gameControls" style="display: none;">
-        <button onclick="performAction('FORWARD')">Forward</button>
-        <button onclick="performAction('LEFT')">Left</button>
-        <button onclick="performAction('RIGHT')">Right</button>
-        <button onclick="performAction('LASER')">Laser</button>
-        <button onclick="getAIPrediction()">Get AI Suggestion</button>
-        <button onclick="createNewGame()">New Game</button>
+      <div class="controls" id="gameControls">
+        <button id="forward-btn">Forward</button>
+        <button id="left-btn">Left</button>
+        <button id="right-btn">Right</button>
+        <button id="laser-btn">Laser</button>
+        <button id="ai-btn">Get AI Advice</button>
+        <button id="new-game-btn">New Game</button>
       </div>
 
       <!-- Loading Spinner -->
@@ -200,10 +287,39 @@
         <div class="loading-spinner"></div>
       </div>
 
-      <!-- Error Message -->
+      <!-- Error Message / AI Recommendation -->
       <div class="error-message" id="errorMessage"></div>
+      
+      <!-- Debug Info -->
+      <div class="debug-info" id="debugInfo">
+        <h3>Debug Info</h3>
+      </div>
     </div>
 
     <script src="game.js"></script>
+    <script>
+      // Initialize UI elements once the page loads
+      document.addEventListener('DOMContentLoaded', function() {
+        console.log('页面加载完成，开始初始化游戏...');
+        
+        // 绑定按钮事件
+        document.getElementById('forward-btn').addEventListener('click', () => performAction('FORWARD'));
+        document.getElementById('left-btn').addEventListener('click', () => performAction('LEFT'));
+        document.getElementById('right-btn').addEventListener('click', () => performAction('RIGHT'));
+        document.getElementById('laser-btn').addEventListener('click', () => performAction('LASER'));
+        document.getElementById('ai-btn').addEventListener('click', () => getAIPrediction());
+        document.getElementById('new-game-btn').addEventListener('click', () => {
+          console.log('用户点击了新游戏按钮');
+          createNewGame();
+        });
+        
+        // 直接初始化测试数据，不再显示选择界面
+        console.log('直接启动单人游戏测试...');
+        setTimeout(() => {
+          // 延迟稍微启动游戏，确保页面完全加载
+          initTestData();
+        }, 200);
+      });
+    </script>
   </body>
 </html> 
