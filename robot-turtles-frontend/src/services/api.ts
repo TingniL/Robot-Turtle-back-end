@@ -15,12 +15,13 @@ const api = axios.create({
 export interface GameStateResponse {
   id: string;
   board: number[];
-  turtlePos: [number, number];
-  turtleDirection: number;
+  turtlePos: [number, number] | [number, number][];
+  turtleDirection: number | string;
   jewelPos: [number, number];
   walls: [number, number][];
   status: 'active' | 'completed' | 'failed';
   moves: number;
+  currentPlayer?: number;
 }
 
 // AI预测接口
@@ -32,9 +33,9 @@ export interface AIPredictionResponse {
 // 游戏API服务
 const gameService = {
   // 获取新游戏
-  newGame: async (): Promise<GameStateResponse> => {
+  newGame: async (playerCount: number = 1): Promise<GameStateResponse> => {
     try {
-      const response = await api.post('/games/new');
+      const response = await api.post('/games/new', { players: playerCount });
       return response.data;
     } catch (error) {
       console.error('Error creating new game:', error);

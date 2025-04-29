@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Image Test</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+        .test-image {
+            border: 1px solid #ccc;
+            padding: 10px;
+            margin: 10px;
+            display: inline-block;
+        }
+        img {
+            width: 100px;
+            height: 100px;
+            display: block;
+            margin-bottom: 5px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Image Loading Test</h1>
+    
+    <div id="test-container" class="test-container">
+        <!-- 测试内容将由JavaScript生成 -->
+    </div>
+    
+    <script>
+        // 获取基础URL
+        const baseUrl = window.location.href.substring(0, window.location.href.lastIndexOf('/') + 1);
+        console.log("Base URL:", baseUrl);
+        
+        const images = [
+            { name: "Turtle 1", path: "img/turtle1.png" },
+            { name: "Turtle 2", path: "img/turtle2.png" },
+            { name: "Turtle 3", path: "img/turtle3.png" },
+            { name: "Turtle 4", path: "img/turtle4.png" },
+            { name: "Jewel", path: "img/jewel.png" },
+            { name: "Wall", path: "img/wall.png" },
+            { name: "Forward", path: "img/forward.png" },
+            { name: "Left", path: "img/left.png" },
+            { name: "Right", path: "img/right.png" },
+            { name: "Laser", path: "img/laser.png" }
+        ];
+        
+        // 创建测试容器
+        const container = document.getElementById('test-container');
+        
+        // 添加当前URL信息
+        const urlInfo = document.createElement('div');
+        urlInfo.innerHTML = `
+            <h2>URL信息</h2>
+            <p>当前页面URL: ${window.location.href}</p>
+            <p>基础URL: ${baseUrl}</p>
+        `;
+        container.appendChild(urlInfo);
+        
+        // 为每个图片生成测试部分
+        images.forEach(image => {
+            const fullPath = baseUrl + image.path;
+            
+            const testDiv = document.createElement('div');
+            testDiv.className = 'test-image';
+            
+            const heading = document.createElement('h3');
+            heading.textContent = image.name;
+            testDiv.appendChild(heading);
+            
+            const img = document.createElement('img');
+            img.src = fullPath;
+            img.alt = image.name;
+            testDiv.appendChild(img);
+            
+            const pathInfo = document.createElement('p');
+            pathInfo.textContent = `完整路径: ${fullPath}`;
+            testDiv.appendChild(pathInfo);
+            
+            container.appendChild(testDiv);
+            
+            // 添加加载成功的处理
+            img.addEventListener('load', function() {
+                const status = document.createElement('p');
+                status.textContent = '✓ 加载成功';
+                status.style.color = 'green';
+                testDiv.appendChild(status);
+                testDiv.style.backgroundColor = '#e6ffe6';
+                testDiv.style.borderColor = '#4CAF50';
+            });
+            
+            // 添加加载失败的处理
+            img.addEventListener('error', function() {
+                const status = document.createElement('p');
+                status.textContent = '✗ 加载失败';
+                status.style.color = 'red';
+                testDiv.appendChild(status);
+                testDiv.style.backgroundColor = '#ffe6e6';
+                testDiv.style.borderColor = '#f44336';
+            });
+            
+            // 如果图片已经加载或加载失败，手动触发事件
+            if (img.complete) {
+                if (img.naturalWidth === 0) {
+                    img.dispatchEvent(new Event('error'));
+                } else {
+                    img.dispatchEvent(new Event('load'));
+                }
+            }
+        });
+    </script>
+</body>
+</html> 
